@@ -14,22 +14,14 @@ print("_|_")
 # letter bank
 letter_bank = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
                "v", "w", "x", "y", "z"]
-# lists for words and guesses
-word_chars = []
+
 wrong_char = []
 
 # Select word
 word = raw_input("Please type a word. ")
 # Confirm item
 print("The secret word is: " + word)
-for letter in word:
-    word_chars.append(letter)
-    print (word_chars)
-
-# Finds occurences of one letter in the word
-def findoccurences(word, letter):
-    return [word.count(letter)]
-
+"""""
 # hangman ASCII art
 print("    ")
 print("    ")
@@ -52,12 +44,15 @@ print("    ")
 print("    ")
 print("    ")
 print("    ")
+
+
 print(" _____")
 print(" |   |")
 print(" | ")
 print(" | ")
 print(" | ")
 print("_|_")
+"""""
 
 def print_hangman(stage):
     if stage == 0:
@@ -117,43 +112,54 @@ def print_hangman(stage):
         print(" |  / \\")
         print("_|_")
         print("Better luck next time!")
-# Prints each letter as a space in the word
-for letter in word:
-    print("_ ", end="")
 
-# Insert letters
+
+def printBlanks(solution, correctletters):
+    # Set solved equal to true (innocent until proven guilty)
+    solved = True
+    # Loop over each letter in the word
+    for l in solution:
+        l = l.lower()  # not required but nice to have
+        # Check if that letter is in the list of correct letters
+        if l in correctletters:
+            print (l + " ", end="")# If it is, print the letter and a space
+        else:  # Remove "False" and replace it with the appropriate condition
+            print ("_ ", end="") # If it isn't, print an underscore and a space
+            solved = False # Also, set solved equal to False
+    print()
+    print()
+    return solved
+
+# Define a list to hold the correctly guessed letters
+correctLetters  = []
+
+# Define a variable to count the number of incorrect guesses
 stage = 0
-while stage < 6 :
-    if True:
-        if "_ " in word:
-            print("Please enter a letter. ")
-            letter_guessed = raw_input("Please enter a letter. ")
-            while len(letter_guessed) != 1:
-                if len(letter_guessed) == 1:
-                    if letter_guessed in letter_bank:
-                        def print_blanks(word, word_chars):
-                            if letter_guessed in word_chars:
-                                #  if character is in the word (True)
-                                print("%s is in the word!" % letter_guessed)
-                                return len(wrong_char)
-                                letter_bank.remove(letter_guessed)
-                                return stage == len(wrong_char)
-                                print(stage=len(wrong_char))
-                                print(word.replace("_ ", letter_guessed))
-                            else:
-                                #  if character is not in the word (False)
-                                print("%s is not in the word!" % letter_guessed)
-                                letter_bank.remove(letter_guessed)
-                                wrong_char.append(letter_guessed)
-                                print("_ ", letter_guessed)
-                                stage = len(wrong_char)
-                                stage += 1
-                else:
-                    print("You have already used that letter or the character is invalid! Try again.")  # if the character is invalid or already used.
-        else:
-            if word == word_chars:
-                print("You have successfully guessed the word!")
-                break
 
-    elif False:
-        print(stage == 6)
+# Repeat forever, we'll use a break to get out
+# Catch Death (Exit loop if they got 6 or more wrong)
+while True:
+    print_hangman(stage)
+    if printBlanks(word, correctLetters):
+        print ('You win!')
+        break
+    if stage >= 6:
+        print ("You lose!")
+        break
+    # Define a variable to hold user input
+    l = ''
+    while(l == ''):
+        l = raw_input("Please enter a letter. ")
+    # Loop until they give a letter
+    print ("TEST 3")
+    # Check if the letter is in the word
+    if l in word:  # Replace True with the correct condition
+        correctLetters.append(l) # If it's right, put it in the correct letters list and let them know it was right
+        print("%s is in the word!" % l)
+    else:
+        stage = stage + 1
+        wrong_char.append(l) # If it's wrong, increment the wrong count and let them know it was wrong
+        print("%s is not in the word!" % l)
+
+# Reveal what the word was
+print ("The word was " + word)
