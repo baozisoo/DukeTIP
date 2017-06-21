@@ -70,15 +70,17 @@ movieNames = np.loadtxt('./ml-100k/u.item',
                         usecols=(0, 1), delimiter='|')  # replace 0 with the correct code to load the movie names
 
 # Create a dictionary with the ids as keys and the names as the values
-movieDict = [dict(zip(movieNames['id'], movieNames['name']))]  # replace 0 with the code to make the dict
+movieDict = [dict(zip(movieNames['id'], movieNames['name']))][0]  # replace 0 with the code to make the dict
 
 # Load the movie Data (u.data) with just columns 0, 1, and 2 (user, movie, rating) all are np.int
 movieData = np.loadtxt('./ml-100k/u.data',
                        dtype={'names': ('user', 'movie', 'rating'),
                               'formats': (np.int, np.int, np.int)},
-                       usecols=(0, 1, 2))  # replace 0 with the correct cod eto load the movie data
-print(movieData)
-print(movieNames)
+                       usecols=(0, 1, 2), delimiter="\t")  # replace 0 with the correct cod eto load the movie data
+#print(movieData)
+#print(movieNames)
+
+# exit(0)  # Remove this line after we finish phase 1
 
 ########################################################
 # Begin Phase 2
@@ -116,36 +118,36 @@ movieRatingS = sorted(movieRating.iteritems(),
                       key=lambda (k, v): (v, k), reverse=True)
 
 # Top 10 Movies
-for i in range(0, 10):
-    key = movieRatingS[i][0]
-    print(str(i + 1), "Name: " + str(movieDict[key]) +
-          "Rating: " + str(movieRatingS[i][1]) +
-          "Rating Count: " + str(movieRatingCount[key]))
-    i += 1
-
-print("Top Ten Movies:")
 # Print the top 10 movies
 # It should print the number, title, id, rating and count of reviews for each movie
 # ie 2. Someone Else's America (1995) (ID: 1599) Rating: 5.0 Count: 1
-
-MoviesPrinted = 0
-i = 0
-while MoviesPrinted < 100:
+print("\nTop Ten Movies:")
+for i in range(0, 10):
     key = movieRatingS[i][0]
-    if movieRatingCount[key] >= 100:
-        print(str(i + 1), "Name: " + str(movieRatingS[i][0]) +
-              "Rating: " + str(movieRatingS[i][1]) +
-              "Rating Count: " + str(movieRatingCount[key]))
-        MoviesPrinted += 1
+    print(str(i + 1), "Name: " + str(movieDict[key]) +
+          " Rating: " + str(movieRatingS[i][1]) +
+          " Rating Count: " + str(movieRatingCount[key]))
 
     i += 1
 
-# Top 10 Movies with at least 100 ratings    
-print("\n\nTop Ten movies with at least 100 ratings:")
+# Top 10 Movies with at least 100 ratings
 # It should print the same thing, but this time all the movies should have over 100 ratings
 # The number should be the movie's absolute rank
 # ie (16. Close Shave, A (1995) (ID: 408) Rating: 4.49 Count: 112)
 # Number 16 is first in this list because it's the first movie with over 100 ratings
+print("\n\nTop Ten movies with at least 100 ratings:")
+
+MoviesPrinted = 0
+i = 0
+while MoviesPrinted < 10:
+    key = movieRatingS[i][0]
+    if movieRatingCount[key] >= 100:
+        print(str(i + 1), "Name: " + str(movieDict[key]) +
+              " Rating: " + str(movieRatingS[i][1]) +
+              " Rating Count: " + str(movieRatingCount[key]))
+        MoviesPrinted += 1
+
+    i += 1
 
 exit(0)  # Remove this line after we finish phase 2
 
