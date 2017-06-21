@@ -24,7 +24,7 @@ x = [-40, -20, 0, 20, 40, 60, 80]
 y = [61, 177.333333, 296.333333, 680.333333, 651, 534.666667, 24.666667]
 
 #Coefficients
-result = np.polyfit(x, y, 2)
+result = np.polyfit(x, y, 5)
 print(result)
 
 #Equation
