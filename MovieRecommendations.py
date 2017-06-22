@@ -135,6 +135,7 @@ for i in range(0, 10):
 # The number should be the movie's absolute rank
 # ie (16. Close Shave, A (1995) (ID: 408) Rating: 4.49 Count: 112)
 # Number 16 is first in this list because it's the first movie with over 100 ratings
+
 print("\n\nTop Ten movies with at least 100 ratings:")
 
 MoviesPrinted = 0
@@ -149,7 +150,7 @@ while MoviesPrinted < 10:
 
     i += 1
 
-exit(0)  # Remove this line after we finish phase 2
+#  exit(0) Remove this line after we finish phase 2
 
 ########################################################
 # Begin Phase 3
@@ -157,7 +158,7 @@ exit(0)  # Remove this line after we finish phase 2
 
 # Create a user likes numpy ndarray so we can use Jaccard Similarity
 # A user "likes" a movie if they rated it a 4 or 5
-# Create a numpy ndarray of zeros with demensions of max user id + 1 and max movie + 1
+# Create a numpy ndarray of zeros with dimensions of max user id + 1 and max movie + 1
 # (because we'll use them as 1 indexed not zero indexed)
 
 # Find the max movie ID + 1
@@ -198,6 +199,17 @@ processLikes(iLike)
 
 # If your code completes the above recommendations properly, you're ready for the last part,
 # allow the user to select any number of movies that they like and then give them recommendations.
+user_Movies = []
+
+user = raw_input("Would you like a movie recommendation? (Y/N)")
+if "Y":
+    user_likes = raw_input("Please enter the IDs for the movies you like:")
+    if int:
+        user_Movies.append(user_likes)
+    else:
+        print (processLikes(iLike))
+else:
+
 # Note: I recommend having them select movies by ID since the titles are really long.
 # You can just assume they have a list of movies somewhere so they already know what numbers to type in.
 # If you'd like to give them options though, that would be a cool bonus project if you finish early.
