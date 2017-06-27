@@ -5,7 +5,42 @@ import numpy as np
 # These functions will be used in Phase 3 (skip for now)
 ########################################################
 
+def findSimilar(iLike, userLikes):
+    # Create an And similarity
+    similarityAnd = np.logical_and(iLike, userLikes)  # replace 0 with the correct code
+    # Create a per user and sum
+    similarityAndSum = np.sum(similarityAnd,axis = 1)  # replace 0 with the correct code
+    # Create an Or similarity
+    userSimilarityOr = np.logical_or(iLike, userLikes)  # replace 0 with the correct code
 
+    # Calculate the similarity
+    # replace 0 with the correct code to calculate the Jaccard Index for each user
+    usersimilarity = similarityAndSum.astype(float) / np.sum(userSimilarityOr, axis = 1)
+
+    # Make the most similar user has a new like that the previous user did not have
+    # I used a while loop.
+    maxIndex = []
+
+    while True:
+        if usersimilarity <= 0:
+            print('TEST')
+        else:
+            maxIndex.append(usersimilarity)
+            print('TEST 2')
+
+    # You can "get rid" of a user that is most similar, but doesn't have any new likes
+    # by setting the userSimilarity for them to 0
+    # When you get the index, save it in the variable maxIndex
+
+    return maxIndex
+
+    newLike = userLikes[maxIndex] - iLike
+    len(newLike[newLike] > 0)
+
+    # Print the max similarity number (most times this is something like 0.17
+    print(np.max(usersimilarity))
+
+    # Return the index of the user which is the best match
 
 ########################################################
 # Begin Phase 1
@@ -135,60 +170,27 @@ print(userLikes)
 # Go through all the rows of the movie data.
 # If the user rated a movie as 4 or 5 set userLikes to 1 for that user and movie
 # Note: You'll need a for loop and an if statement
+
 for row in movieData:
-    if i in float("rating") >= 4:
-        userLikes[id] = 1
+    if row["rating"] >= 4:
+        userLikes[row['user'], row['movie']] = 1
 
-print ("Phase 3 TEST")
-
-def findSimilar(iLike, userLikes):
-    # Create an And similarity
-    similarityAnd = np.logical_and(iLike, userLikes)  # replace 0 with the correct code
-    # Create a per user and sum
-    similarityAndSum = np.sum(iLike, userLikes)  # replace 0 with the correct code
-    # Create an Or similarity
-    userSimilarityOr = np.logical_or(iLike, userLikes)  # replace 0 with the correct code
-
-    # Calculate the similarity
-    # replace 0 with the correct code to calculate the Jaccard Index for each user
-    usersimilarity = float(similarityAnd) / float(userSimilarityOr)
-
-    # Make the most similar user has a new like that the previous user did not have
-    # I used a while loop.
-    while True:
-        if usersimilarity <= 0:
-            print('TEST')
-        else:
-            print('TEST')
-    # You can "get rid" of a user that is most similar, but doesn't have any new likes
-    # by setting the userSimilarity for them to 0
-    # When you get the index, save it in the variable maxIndex
-
-    maxIndex = []
-
-    # Print the max similarity number (most times this is something like 0.17
-    print(usersimilarity)
-
-    # Return the index of the user which is the best match
-
+#################################################
 
 def printMovie(id):
     # Print the id of the movie and the name.  This should look something like
     # "    - 430: Duck Soup (1933)" if the id is 430 and the name is Duck Soup (1933)
-    print(movieNames['id', 'name'])  # replace 0 with the correct code
+    print("    - "+ str(id) + ": "+ str(movieDict[id]))  # replace 0 with the correct code
 
 
 def processLikes(iLike):
     print("\n\nSince you like:")
 
     # Print the name of each movie the user reported liking
-    print()
     # Hint: Use a for loop and the printMovie function.
-    for id in movieData:
-        print (printMovie(id))
-
+    for id in iLike:
+        printMovie(id)
     # Convert iLike into an array of 0's and 1's which matches the array for other users
-
     # It should have one column for each movie (just like the userLikes array)
     # Start with all zeros, then fill in a 1 for each movie the user likes
 
@@ -197,31 +199,21 @@ def processLikes(iLike):
     for id in iLike:
         iLikeNp[id] = 1
 
-    for id in userLikes:
-        iLikeNp[id] = 1
-
-    print(iLikeNp.sum())
-    # replace 0 with the code to make the array of zeros
-    # You'll need a few more lines of code to fill in the 1's as needed
-    commonLikes = userLikes * iLikeNp
-    print(commonLikes)
-
-    userAnd = commonLikes.sum(axis=1)
-    print(userAnd)
-
-    list = np.argwhere(userLikes[1, :] == 1)
-    print(list.flatten())
-
     # Find the most similar user
-    user = 0  # replace 0 with the correct code (hint: use one of your functions)
+    user = findSimilar(iLikeNp, userLikes)  # replace 0 with the correct code (hint: use one of your functions)
     print("\nYou might like: ")
+
     # Find the indexes of the values that are ones
     # https://stackoverflow.com/a/17568803/3854385 (Note: You don't want it to be a list, but you do want to flatten it.)
 
-    recLikes = 0  # replace 0 with the needed code
+    recLikes = np.argwhere(userLikes[user, :] == 1)  # replace 0 with the needed code
+    recLikes = recLikes.flatten()
 
     # For each item the similar user likes that the person didn't already say they liked
     # print the movie name using printMovie (you'll also need a for loop and an if statement)
+    for item in recLikes:
+        if item not in iLike:
+            print (printMovie(id))
 
 ########################################################
 # At this point, go back up to the top and fill in the
